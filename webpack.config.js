@@ -19,6 +19,7 @@ const environmentEnv = dotenv.config({
 const envVariables =
     Object.assign({}, dotEnvVars, environmentEnv);
 const isDev = NODE_ENV === 'development';
+const isTest = NODE_ENV === 'test';
 const defines =
   Object.keys(envVariables)
   .reduce((memo, key) => {
@@ -35,6 +36,31 @@ var config = getConfig({
   out: dest,
   clearBeforeBuild: true
 });
+if (isTest) {
+  config.externals = {
+    'react/addons': true,
+    'react/lib/ReactContext': true,
+    'react/lib/ExecutionEnvironment': true
+  }
+
+  config.plugins = config.plugins.filter(p => {
+    const name = p.constructor.toString();
+    const fnName = name.match(/^function (.*)\((.*\))/)
+
+    const idx = [
+      'DedupePlugin',
+      'UglifyJsPlugin'
+    ].indexOf(fnName[1]);
+    return idx < 0;
+  })
+}
+config.resolve.root = [src, modules]
+config.resolve.alias = {
+  'css': join(src, 'styles'),
+  'containers': join(src, 'containers'),
+  'components': join(src, 'components'),
+  'utils': join(src, 'utils')
+}
 
 config.postcss = [].concat([
   require('precss')({}),
