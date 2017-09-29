@@ -6,17 +6,15 @@ import './app.css'
 
 import {browserHistory, Router, Route} from 'react-router'
 
+import makeRoutes from './routes'
+
 const Home = React.createClass({
   render: function() {
     return (<div>Hello world</div>)
   }
 })
 
-const routes = (
-  <Router>
-    <Route path="/" component={Home} />
-  </Router>
-)
+const routes = makeRoutes()
 
 import App from 'containers/App/App'
 
