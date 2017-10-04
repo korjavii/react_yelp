@@ -24,8 +24,7 @@ class App extends React.Component {
 
   render () {
      return (
-       <div className={styles.wrapper}>
-         <i className="fa fa-star"></i>
+       <div>
          {this.content}
        </div>
      )

@@ -51,6 +51,7 @@
     "yargs": "^5.0.0"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "font-awesome": "^4.6.3",
     "google-maps-react": "^1.1.0",
     "react": "^15.6.2",
