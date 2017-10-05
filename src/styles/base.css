@@ -5,4 +5,5 @@
     --white: #ffffff;
     --highlight: #48b5e9;
     --heading-color: var(--highlight);
+    --padding: 25px;
 }

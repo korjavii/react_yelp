@@ -4,7 +4,7 @@ import {searchNearby} from 'utils/googleApiHelpers'
 import Header from 'components/Header/Header'
 import styles from './styles.module.css'
 import Sidebar from 'components/Sidebar/Sidebar'
-import Listing from 'components/Listing/Listing'
+
 
 export class Container extends React.Component {
     constructor(props) {
@@ -32,7 +32,23 @@ export class Container extends React.Component {
             // There was an error
         });
     }
+    onMarkerClick(props, marker, e) {
+        const {push} = this.context.router;
+        push(`/map/detail/${props.name}`)
+    }
     render() {
+        let children = null;
+        if (this.props.children) {
+            // We have children in the Container component
+            children = React.cloneElement(
+                this.props.children,
+                {
+                    google: this.props.google,
+                    places: this.state.places,
+                    loaded: this.props.loaded,
+                    onMarkerClick: this.onMarkerClick.bind(this)
+                });
+        }
         return (
             <div>
                 <Map
@@ -45,11 +61,17 @@ export class Container extends React.Component {
                         title={'Restaurants'}
                         places={this.state.places}
                     />
-                    <Listing places={this.state.places}/>
+                    <div className={styles.content}>
+                        {children}
+                    </div>
                 </Map>
             </div>
         )
     }
+}
+
+Container.contextTypes = {
+    router: React.PropTypes.object
 }
 
 export default GoogleApiWrapper({
